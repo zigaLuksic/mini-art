@@ -127,3 +127,15 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Images should be added by hand
+*.jpg
+*.jpeg
+*.png
+*.bmp
+
+# Jsons too
+*.json
+
+# vscode
+.vscode
