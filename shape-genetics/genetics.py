@@ -122,6 +122,7 @@ class CircleGene(GeneKind):
         f = new_w / self.w
         up_gene = gene.copy()
         up_gene["point"] = (int(gene["point"][0]*f), int(gene["point"][1]*f))
+        up_gene["r"] = int(up_gene["r"]*f)
         return up_gene
 
 # =============================================================================
