@@ -1,6 +1,6 @@
 import random
 from typing import List, Tuple
-from PIL import Image, ImageDraw, ImageChops, ImageFont
+from PIL import Image, ImageDraw, ImageChops, ImageFont, ImageStat
 
 tyGene = dict
 tyDna = List[tyGene]
@@ -398,13 +398,10 @@ class DNA:
 
     def evaluate_dna(self, dna: tyDna, img)-> int:
         """Calculates the difference between the image and the DNA drawing."""
-        def calculate_diff(img1, img2):
-            diff_img = ImageChops.difference(img1, img2)
-            total_diff = sum((x+y+z) for (x, y, z) in diff_img.getdata())
-            return total_diff
-
         dna_img = self.dna_to_image(dna)
-        return calculate_diff(img, dna_img)
+        diff_img = ImageChops.difference(img, dna_img)
+        stats = ImageStat.Stat(diff_img)
+        return sum(stats.sum)
 
     def recover_from_json(self, dna: tyDna)-> int:
         """Fixes the types after being read from json."""
