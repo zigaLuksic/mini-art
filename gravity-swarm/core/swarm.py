@@ -35,8 +35,8 @@ def update_position(x, y, vx, vy, swarm_data):
 
 def draw_point(x, y, i, swarm_data, canvas):
     X, Y = int(x), int(y)
-    width = len(canvas)
-    height = len(canvas[0])
+    width = len(canvas[0])
+    height = len(canvas)
     if 0 <= X < width and 0 <= Y < height:
         j = i / swarm_data["steps"]
         canvas[Y, X, 0] = min(canvas[Y, X, 0] + j * 60, 255)

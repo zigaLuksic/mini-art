@@ -108,3 +108,29 @@ The process then needs more and more steps for improvement. Here are the next fe
 ![at90000](examples/shape-genetics-90000.png)
 ![at210000](examples/shape-genetics-210000.png)
 ![at600000](examples/shape-genetics-600000.png)
+
+
+---
+## Minimal Art Evolution
+
+Another project with evolution based optimisation. This project is aimed at using a low count of shapes to approximate an image (somewhere around 10, as opposed to 100 for `shape-genetics`).
+
+The user sets:
+- the original image;
+- amount of shapes, specific of shapes;
+- evolution specifics such as size of population, number of steps (defaults provided in `test_file.py`).
+
+The algorithm keeps a population of randomized DNAs that encode images. The optimisation proceeds in two repeating steps:
+
+1. Every DNA is optimised by doing small perturbations on elements of the image and keeping the ones that improve the approximation.
+2. The population is sorted according to goodness of fit. The worse half is discarded, and each of the 'victorious' DNAs is used as a seed for new population members.
+
+The seeding is again aimed at working with a low amount of elements, and therefore only replaces an element or reorders the drawing order of elements. There is no cross-over or any other useful evolution tool, due to it making little sense.
+
+Below are examples for approximating a picture of Nara with 100, 50, 20, and 10 elements. It is also clear that for a large number of elements we just end up with a poor approximation, whereas lower counts result in something that hints at minimalist art.
+
+![at0](examples/minimalist_0.jpg)
+![at100](examples/minimalist_100.png)
+![at50](examples/minimalist_50.png)
+![at20](examples/minimalist_20.png)
+![at10](examples/minimalist_10.png)
