@@ -178,7 +178,6 @@ def seed_population(n_els: int, n_images: int, real_image, rand_specs)-> tyPop:
     return pop
 
 
-
 def mutate_image(width: int, height: int, image: tyImage, specs={})-> tyImage:
     mutation = random.choice(["reshuffle", "replace"])
     bg, els = image
@@ -187,7 +186,7 @@ def mutate_image(width: int, height: int, image: tyImage, specs={})-> tyImage:
     if mutation == "reshuffle":
         i, j = randint(0, len(els)-1), randint(0, len(els)-1)
         new_els[i], new_els[j] = new_els[j], new_els[i]
-    
+
     elif mutation == "replace":
         i = randint(0, len(els)-1)
         new_els[i] = random_element(width, height, specs=specs)
@@ -195,8 +194,7 @@ def mutate_image(width: int, height: int, image: tyImage, specs={})-> tyImage:
     return bg, new_els
 
 
-
-def evolve_image(n_els: int, in_path: str, out_path: str):
+def evolve_image(n_els: int, pop_size: int, steps: int, exploration_step: int,  in_path: str, out_name: str, save_on=100, save_final=False):
 
     rand_specs = {
         "kinds": ["rectangle", "circle", "line"],
@@ -209,16 +207,12 @@ def evolve_image(n_els: int, in_path: str, out_path: str):
     real_image = Image.open(in_path)
     w, h = real_image.width, real_image.height
 
-    improvement_steps = 1010
-    exploration_step = 100
-    pop_size = 64
-
     pop = seed_population(n_els, pop_size, real_image, rand_specs)
-    
+
     t = time.time()
-    for i in range(improvement_steps+1):
-        intensity = (1.2 - (i / improvement_steps)) / 2
-        
+    for i in range(steps+1):
+        intensity = (1.2 - (i / steps)) / 2
+
         improved_pop = []
         for fit, img in pop:
             bg, els = img
@@ -258,26 +252,25 @@ def evolve_image(n_els: int, in_path: str, out_path: str):
             now = time.time()
             dt, t = now-t, now
             print(
-                f"{i}/{improvement_steps} ({round(i/improvement_steps*100)}%)  [best fit: {min(pop, key=lambda x: x[0])[0]:.4f}, worst fit: {max(pop, key=lambda x: x[0])[0]:.4f}, time: {dt:.3f}]")
+                f"{i}/{steps} ({round(i/steps*100)}%)  [best fit: {min(pop, key=lambda x: x[0])[0]:.4f}, worst fit: {max(pop, key=lambda x: x[0])[0]:.4f}, time: {dt:.3f}]")
 
-        if i % 100 == 0:
+        if i % save_on == 0:
             best = min(pop, key=lambda x: x[0])[1]
             canvas = draw_image(w, h, best)
-            canvas.save("z"+str(i)+out_path)
+            canvas.save("z"+str(i)+out_name)
 
         if i % exploration_step == 0:
             pop.sort(key=lambda x: x[0])
             good = pop[:len(pop)//2]
             opts = [
-                mutate_image(w, h, image, specs=rand_specs) 
+                mutate_image(w, h, image, specs=rand_specs)
                 for fit, image in good]
             evals = [evaluate_image(img, real_image) for img in opts]
             pop = good + list(zip(evals, opts))
 
-
-
-    for fit, img in pop:
-        canvas = draw_image(w, h, img)
-        canvas.save("final_"+str(fit)+"_"+out_path)
+    if save_final:
+        for fit, img in pop:
+            canvas = draw_image(w, h, img)
+            canvas.save("final_"+str(fit)+"_"+out_name)
 
     return
