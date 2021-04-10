@@ -134,3 +134,27 @@ Below are examples for approximating a picture of Nara with 100, 50, 20, and 10 
 ![at50](examples/minimalist_50.png)
 ![at20](examples/minimalist_20.png)
 ![at10](examples/minimalist_10.png)
+
+
+---
+## Triangle Mesh Approximation
+
+Uses a triangle tiling with random colors, which is then iteratively perturbated to approximate the input picture. The points of the triangle mesh are fixed to a certain area in order to prevent deformation (this can be turned off).
+
+**Note:** A large improvement is in the works, hence the documentation is minimal.
+
+The user sets:
+- the original image;
+- image specifics (number of triangle rows, number of triangles per row).
+- evolution specifics such as size of population, number of steps (defaults provided in `test_file.py`).
+- specifics of drawing (upscaling the final picture, adding borders to triangles).
+
+The optimisation is once again encoded with an evolution based algorithm:
+
+1. Every DNA is optimised by doing small perturbations to colors of triangles and points of the mesh (it is possible to only mutate colors for the first few steps to avoid large changes to the mesh before it becomes relevant).
+2. The population is sorted according to fit and halved. The better options are then recombined into new options (via random choice for colors and mesh points).
+
+![original](examples/triangle-mesh-starting.jpg)
+![approximation](examples/triangle-mesh-example.png)
+
+
