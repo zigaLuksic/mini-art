@@ -72,6 +72,12 @@ There is a variety of ML models (which are run at base arguments for simplicity)
 ![original](examples/ML-rebuild-starting.png)
 ![result](examples/ML-rebuild-example.png)
 
+An interesting option is sample from two pictures and try to rebuild the joint picture. To achieve a *gradual merge* we can bias the sampling a bit.
+
+![original](examples/ML-dual-rebuild-starting-1.jpg)
+![original](examples/ML-dual-rebuild-starting-2.jpg)
+![result](examples/ML-dual-rebuild-example.png)
+
 ---
 ## Shape Genetics
 
